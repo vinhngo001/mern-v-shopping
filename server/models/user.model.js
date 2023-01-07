@@ -19,6 +19,10 @@ const UserSchema = new Schema({
 	cart: {
 		type: Array,
 		default: []
+	},
+	role:{
+		type: String,
+		default: "member"
 	}
 }, {
 	timestamps: true
