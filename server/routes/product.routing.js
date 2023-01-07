@@ -9,14 +9,14 @@ const productCtrl = require('../controllers/product.controller')
  * @desc Get product
  * @access Private
 */
-router.get('/', [auth, admin], productCtrl.getAll)
+router.get('/', productCtrl.getAll)
 
 /**
  * @route POST api/product
  * @desc Post product
  * @access Private
 */
-router.post('/', [auth, admin], productCtrl.create)
+router.post('/',  productCtrl.create)
 
 /**
  * @route PUT api/product
