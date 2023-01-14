@@ -12,8 +12,8 @@ export const DataProvider = ({ children }) => {
         if (firstLogin) {
             async function refreshToken() {
                 const res = await postDataAPI('api/auth/refresh-token');
-
-                setToken(res?.data?.accessToken);
+                // console.log(res.data.results);
+                setToken(res?.data?.results?.accessToken);
                 setTimeout(() => {
                     refreshToken();
                 }, 10 * 60 * 1000);

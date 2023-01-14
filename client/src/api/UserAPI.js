@@ -4,29 +4,34 @@ import { getDataAPI } from "../utils/fetchData";
 function UserAPI(token) {
 	const [isLogged, setIsLogged] = useState(false);
 	const [isAdmin, setIsAdmin] = useState(false);
+	const [cart, setCart] = useState([]);
 
 	useEffect(() => {
 		if (token) {
 			async function getUser() {
 				try {
-					const res = await getDataAPI('api/user', null, token);
+					const res = await getDataAPI('api/user', token);
 					setIsLogged(true);
-					res.data.user.role === "admin" ? setIsAdmin(true) : setIsAdmin(false);
-
+					const user = res.data.results;
+					user.role === "admin" ? setIsAdmin(true) : setIsAdmin(false);
+					setCart(user.cart);
 				} catch (err) {
-					console.log(err?.response?.data?.message);
-					alert(err?.response?.data?.message)
+					console.log(err);
+					alert(err !== undefined && err?.response?.data?.message)
 				}
 			}
-			setTimeout(()=>{
+			setTimeout(() => {
 				getUser();
-			},3000)
+			}, 3000)
 		}
 	}, [token]);
+	function addCart() {
 
+	}
 	return {
 		isLogged: [isLogged, setIsLogged],
 		isAdmin: [isAdmin, setIsAdmin],
+		cart: addCart,
 	}
 }
 

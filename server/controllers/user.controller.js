@@ -5,7 +5,7 @@ const userController = {
     getUser: async (req, res) => {
         const responseDTO = new ResponseDTO();
         try {
-            const user = await userModel.findById(req.userId).select('-password');
+            const user = await userModel.findById(req.user._id).select('-password');
 
             if (!user)
                 return res.status(400).json(responseDTO.badRequest('User not found'));

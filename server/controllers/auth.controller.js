@@ -69,8 +69,7 @@ const authController = {
             generateToken.refreshToken({ userId: user._id }, res);
 
             res.status(200).json(responseDTO.success('User logged in successfully', {
-                user: { ...user._doc, password: "" },
-                accessToken
+                user: { ...user._doc, password: "" }
             }))
         } catch (error) {
             console.log(error);
@@ -100,7 +99,7 @@ const authController = {
                 const generateToken = new GenerateToken();
                 const accessToken = generateToken.accessToken({ userId: user._id });
 
-                res.status(200).json(responseDTO.success("", {
+                res.status(200).json(responseDTO.success("Success", {
                     user: { ...user._doc },
                     accessToken
                 }))
