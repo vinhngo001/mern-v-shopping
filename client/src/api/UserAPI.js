@@ -8,7 +8,7 @@ import {
 	DELETE_POST,
 	UPDATE_POST,
 	FIND_POST
-} from './constants'
+} from './ProductAPI'
 import axios from 'axios'
 
 export const PostContext = createContext()
