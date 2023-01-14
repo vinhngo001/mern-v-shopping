@@ -8,7 +8,6 @@ function UserAPI(token) {
 	useEffect(() => {
 		if (token) {
 			async function getUser() {
-				localStorage.setItem("firstLogin", true);
 				try {
 					const res = await getDataAPI('api/user', null, token);
 					setIsLogged(true);

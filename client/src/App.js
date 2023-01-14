@@ -1,6 +1,20 @@
+import React from "react";
+import { BrowserRouter as Router } from 'react-router-dom'
+import { DataProvider } from "./GlobalState"
+import MainPages from "./components/mainpages/Pages"
+import Headers from "./components/headers/Headers";
+
 function App() {
 	return (
-		<div className='App'>App</div>
+
+		<DataProvider>
+			<Router>
+				<div className="App">
+					<Headers />
+					<MainPages />
+				</div>
+			</Router>
+		</DataProvider>
 	)
 }
 
