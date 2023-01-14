@@ -8,7 +8,7 @@ class GenerateToken {
     }
     refreshToken(payload, res) {
         const token = jwt.sign(payload, REFRESH_TOKEN_SECRET, { expiresIn: '7d' });
-        res.cookies('v_token', token, {
+        res.cookie('v_token', token, {
             httpOnly: true,
             path: `${RF_TOKEN_URL}`,
             maxAge: 7 * 24 * 60 * 60 * 1000

@@ -14,6 +14,20 @@ router.post('/register',authCtrl.register)
  * @desc Login user
  * @access Public
 */
-router.post('/login',authCtrl.login )
+router.post('/login',authCtrl.login );
+
+/**
+ * @route POST api/auth/refresh-token
+ * @desc Refresh token
+ * @access Public
+*/
+router.post('/refresh-token', authCtrl.refreshToken);
+
+/**
+ * @route POST api/auth/logout
+ * @desc Logout user
+ * @access Public
+*/
+router.post('/logout', authCtrl.logout);
 
 module.exports = router

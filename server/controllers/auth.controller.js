@@ -76,6 +76,51 @@ const authController = {
             console.log(error);
             return res.status(500).json(responseDTO.serverError(error.message))
         }
+    },
+
+    refreshToken: async (req, res) => {
+        const responseDTO = new ResponseDTO();
+        try {
+            const rf_token = req.cookies.v_token;
+            if (!rf_token) {
+                return res.status(400).json(responseDTO.badRequest("Please login!"));
+            }
+
+            jwt.verify(rf_token, process.env.REFRESH_TOKEN_SECRET, async (err, result) => {
+                if (err) {
+                    return res.status(400).json(responseDTO.badRequest("Please login now!"));
+                }
+
+                const decoded = result.userId;
+                const user = await userModel.findById(decoded).select("-password");
+                if (!user) {
+                    return res.status(400).json(responseDTO.badRequest("Please login again!"));
+                }
+
+                const generateToken = new GenerateToken();
+                const accessToken = generateToken.accessToken({ userId: user._id });
+
+                res.status(200).json(responseDTO.success("", {
+                    user: { ...user._doc },
+                    accessToken
+                }))
+
+            })
+        } catch (error) {
+            console.log(error);
+            return res.status(500).json(responseDTO.serverError(error.message));
+        }
+    },
+
+    logout: async (req, res) => {
+        const responseDTO = new ResponseDTO();
+        try {
+            res.clearCookie("v_token", { path: `${process.env.RF_TOKEN_URL}` });
+            res.status(200).json(responseDTO.success("Logged out successfully"));
+        } catch (error) {
+            console.log(error);
+            return res.status(500).json(responseDTO.serverError(error.message));
+        }
     }
 }
 
