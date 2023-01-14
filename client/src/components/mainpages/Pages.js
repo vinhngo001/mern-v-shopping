@@ -14,7 +14,8 @@ const Pages = () => {
 	const state = useContext(GlobalState);
 	const [isAdmin] = state.userAPI.isAdmin;
 	const [isLogged] = state.userAPI.isLogged;
-
+	console.log(state);
+	
 	return (
 		<Switch>
 			<Route path="/" exact component={Products} />

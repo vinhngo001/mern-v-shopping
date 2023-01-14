@@ -19,8 +19,9 @@ const Register = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const res = await postDataAPI('api/auth/register', userData, null);
-            console.log(res.data);
+            await postDataAPI('api/auth/register', userData, null);
+            localStorage.setItem("firstLogin", true);
+            window.location.href = "/";
         } catch (err) {
             console.log(err);
             alert(err.response.data.message);

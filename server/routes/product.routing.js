@@ -16,7 +16,7 @@ router.get('/', productCtrl.getAll)
  * @desc Post product
  * @access Private
 */
-router.post('/',  productCtrl.create)
+router.post('/', [auth, admin], productCtrl.create)
 
 /**
  * @route PUT api/product

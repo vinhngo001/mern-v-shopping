@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const verifyToken = require("../middleware/auth.middleware");
+const { auth } = require("../middleware");
 const userCtrl = require("../controllers/user.controller");
 
 /**  
@@ -7,6 +7,6 @@ const userCtrl = require("../controllers/user.controller");
  * @desc Check if user is logged in
  * @access Public
 */
-router.get('/', verifyToken, userCtrl.getUser);
+router.get('/', auth, userCtrl.getUser);
 
 module.exports = router;

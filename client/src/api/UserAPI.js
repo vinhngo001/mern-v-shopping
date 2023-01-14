@@ -12,7 +12,8 @@ function UserAPI(token) {
 				try {
 					const res = await getDataAPI('api/user', token);
 					setIsLogged(true);
-					const user = res.data.results;
+					const user = res.data.results._doc;
+					// console.log(user);
 					user.role === "admin" ? setIsAdmin(true) : setIsAdmin(false);
 					setCart(user.cart);
 				} catch (err) {
@@ -20,9 +21,8 @@ function UserAPI(token) {
 					alert(err !== undefined && err?.response?.data?.message)
 				}
 			}
-			setTimeout(() => {
-				getUser();
-			}, 3000)
+			
+			getUser();
 		}
 	}, [token]);
 	function addCart() {

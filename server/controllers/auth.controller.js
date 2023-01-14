@@ -7,7 +7,7 @@ const GenerateToken = require('../helpers/generateToken.helper');
 const authController = {
     register: async (req, res) => {
         const responseDTO = new ResponseDTO();
-        const { username, email, password } = req.body
+        const { username, email, password, fullname } = req.body
 
         // Simple validation
         if (!email || !username || !password)
@@ -26,17 +26,16 @@ const authController = {
 
             // All good
             const hashedPassword = await bcrypt.hash(password, 12);
-            const newUser = new userModel({ username, email, password: hashedPassword });
+            const newUser = new userModel({ username, email, password: hashedPassword, fullname });
             await newUser.save();
 
             // Return token
             const generateToken = new GenerateToken();
-            const accessToken = generateToken.accessToken({ userId: newUser._id });
+            // const accessToken = generateToken.accessToken({ userId: newUser._id });
             generateToken.refreshToken({ userId: newUser._id }, res)
 
             res.status(200).json(responseDTO.success('User created successfully', {
-                user: { ...newUser._doc, password: "" },
-                accessToken
+                user: { ...newUser._doc, password: "" }
             }))
         } catch (error) {
             console.log(error)
@@ -65,7 +64,7 @@ const authController = {
             // All good
             // Return token
             const generateToken = new GenerateToken();
-            const accessToken = generateToken.accessToken({ userId: user._id });
+            // const accessToken = generateToken.accessToken({ userId: user._id });
             generateToken.refreshToken({ userId: user._id }, res);
 
             res.status(200).json(responseDTO.success('User logged in successfully', {

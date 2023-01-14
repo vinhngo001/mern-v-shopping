@@ -52,6 +52,9 @@ button {
 /* -------- CART ---------- */
 @import url("./cart.css");
 
+/* -------- CATEGORY ---------- */
+@import url("./categories.css");
+
 /* ----------------- Responsive ------------------ */
 @media (max-width: 820px) {
     header .logo {

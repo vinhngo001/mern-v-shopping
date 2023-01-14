@@ -1,5 +1,7 @@
 import React, { createContext, useEffect, useState } from "react";
 import UserAPI from "./api/UserAPI";
+import ProductAPI from "./api/ProductAPI";
+import CategoryAPI from "./api/CategoryAPI";
 import { postDataAPI } from "./utils/fetchData";
 
 export const GlobalState = createContext();
@@ -25,7 +27,9 @@ export const DataProvider = ({ children }) => {
 
     const state = {
         token: [token, setToken],
-        userAPI: UserAPI(token)
+        userAPI: UserAPI(token),
+        productAPI: ProductAPI(),
+        categoriesAPI: CategoryAPI()
     }
 
     return (
