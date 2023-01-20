@@ -14,6 +14,7 @@ const uploadController = {
     post: async (req, res) => {
         const responseDTO = new ResponseDTO();
         try {
+            console.log(req.files);
             if (!req.files || Object.keys(req.files).length === 0) {
                 return res.status(400).json(responseDTO.badRequest('No files were uploaded.'));
             }

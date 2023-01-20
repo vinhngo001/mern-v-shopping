@@ -7,7 +7,7 @@ const productController = {
         const responseDTO = new ResponseDTO();
         try {
             const products = await productModel.find({});
-            responseDTO.success("Success", products);
+            res.status(200).json(responseDTO.success("Success", products));
         } catch (error) {
             return res.status(500).json(responseDTO.serverError(error.message));
         }
@@ -28,8 +28,10 @@ const productController = {
             // if (err) {
             //     return res.status(400).json(responseDTO.badRequest(err));
             // }
+            const newProduct = await new productModel({ ...req.body });
+            await newProduct.save();
 
-            res.status(200).json(responseDTO.success("Success"));
+            res.status(200).json(responseDTO.success("Created new product successfully"));
         } catch (error) {
             console.log(error);
             return res.status(500).json(responseDTO.serverError(error.message));

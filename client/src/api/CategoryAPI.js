@@ -8,7 +8,7 @@ function CategoryAPI() {
 	useEffect(() => {
 		const getCategories = async () => {
 			try {
-				const res = await getDataAPI('api/category');
+				const res = await getDataAPI('/api/category');
 				setCategories(res.data.results)
 			} catch (err) {
 				console.log(err);

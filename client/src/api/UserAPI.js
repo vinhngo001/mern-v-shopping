@@ -10,7 +10,7 @@ function UserAPI(token) {
 		if (token) {
 			async function getUser() {
 				try {
-					const res = await getDataAPI('api/user', token);
+					const res = await getDataAPI('/api/user', token);
 					setIsLogged(true);
 					const user = res.data.results._doc;
 					// console.log(user);

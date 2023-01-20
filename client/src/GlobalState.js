@@ -13,7 +13,7 @@ export const DataProvider = ({ children }) => {
         const firstLogin = localStorage.getItem("firstLogin");
         if (firstLogin) {
             async function refreshToken() {
-                const res = await postDataAPI('api/auth/refresh-token');
+                const res = await postDataAPI('/api/auth/refresh-token');
                 // console.log(res.data.results);
                 setToken(res?.data?.results?.accessToken);
                 setTimeout(() => {

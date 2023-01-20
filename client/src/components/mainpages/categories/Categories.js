@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import { GlobalState } from "../../../GlobalState";
-import { patchDataAPI, postDataAPI } from "../../../utils/fetchData";
+import { deleteDataAPI, patchDataAPI, postDataAPI } from "../../../utils/fetchData";
 
 const Categories = () => {
     const state = useContext(GlobalState);
@@ -40,8 +40,15 @@ const Categories = () => {
         setOnEdit(true);
     }
 
-    const deleteCategory = (id) => {
-
+    const deleteCategory = async (id) => {
+        try{
+            const res = await deleteDataAPI(`api/category/${id}`, token);
+            alert(res?.data?.message);
+            setCallback(!callback);
+        }catch(err){
+            console.log(err);
+            alert(err !== undefined && err?.response?.data?.message);
+        }
     }
     return (
         <div className="categories">
