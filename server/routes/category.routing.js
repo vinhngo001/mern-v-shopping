@@ -7,7 +7,7 @@ const categoryCtrl = require("../controllers/category.controller");
  * @desc Get all categories
  * @access Private
 */
-router.get('/', [auth, admin], categoryCtrl.getAll);
+router.get('/', categoryCtrl.getAll);
 
 /**  
  * @route POST api/category

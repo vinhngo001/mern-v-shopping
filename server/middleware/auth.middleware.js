@@ -4,11 +4,10 @@ const userModel = require('../models/user.model');
 
 const verifyToken = async (req, res, next) => {
 	const responseDTO = new ResponseDTO();
-	const authHeader = req.header('Authorization')
-	const token = authHeader && authHeader.split(' ')[1]
-
+	const authHeader = req.header('Authorization');
+	const token = authHeader && authHeader.split(' ')[1];
 	if (!token)
-		return responseDTO.unauthorization('Access token not found');
+		return res.staus(401).json(responseDTO.unauthorization('Access token not found'));
 	try {
 		const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
 		if (!decoded) {
