@@ -5,14 +5,19 @@ function CategoryAPI() {
 	const [categories, setCategories] = useState([]);
 	const [callback, setCallback] = useState(false);
 
-	useEffect(() =>{
-        const getCategories = async () =>{
-            const res = await getDataAPI('api/category');
-            setCategories(res.data.results)
-        }
+	useEffect(() => {
+		const getCategories = async () => {
+			try {
+				const res = await getDataAPI('api/category');
+				setCategories(res.data.results)
+			} catch (err) {
+				console.log(err);
+				alert(err !== undefined && err?.response?.data?.message)
+			}
+		}
 
-        getCategories()
-    },[callback])
+		getCategories()
+	}, [callback])
 
 	return {
 		categories: [categories, setCategories],

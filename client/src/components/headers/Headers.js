@@ -19,7 +19,7 @@ const Headers = () => {
 	const adminRouter = () => {
 		return (
 			<>
-				<li><Link to="/create_product">Create Product</Link></li>
+				<li><Link to="/product/create">Create Product</Link></li>
 				<li><Link to="/category">Categories</Link></li>
 			</>
 		)
