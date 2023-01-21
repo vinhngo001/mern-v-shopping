@@ -2,10 +2,11 @@ require('dotenv').config()
 const express = require('express');
 const cookieParser = require("cookie-parser");
 const cors = require('cors');
-const helmet = require("helmet");
 const key = require("./configs/main.config");
 const ConnectDB = require("./configs/db.config");
+const fileUpload = require('express-fileupload');
 const path = require("path");
+const helmet = require("helmet");
 const isProduct = process.env.NODE_ENV === "production";
 
 // config
@@ -18,6 +19,9 @@ const app = express();
 app.use(cookieParser());
 app.use(express.json());
 app.use(cors());
+app.use(fileUpload({
+    useTempFiles: true
+}));
 app.use(helmet());
 
 // Routes

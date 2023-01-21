@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { GlobalState } from '../../../GlobalState'
 import Loading from "../../Loading";
 import { useHistory, useParams } from 'react-router-dom'
-import { postDataAPI } from "../../../utils/fetchData";
+import { patchDataAPI, postDataAPI } from "../../../utils/fetchData";
 import { checkImage } from "../../../utils/fileUpload";
 import axios from "axios";
 
@@ -12,14 +12,13 @@ const CreateProduct = () => {
     const [isAdmin] = state.userAPI.isAdmin;
     const [products] = state.productAPI.products;
     const [token] = state.token;
-
+    const [callback, setCallback] = state.productAPI.callback;
     const [upload, setUpload] = useState("");
     const [images, setImages] = useState(false);
     const [loading, setLoading] = useState(false);
     const { id } = useParams();
     const history = useHistory();
-
-    const [product, setProduct] = useState({
+    const initialState = {
         product_id: '',
         title: '',
         price: 0,
@@ -27,18 +26,24 @@ const CreateProduct = () => {
         content: 'Welcome to Dev-VN. Here you can learn web designing, UI/UX designing, html css tutorials, css animations and css effects, javascript and jquery tutorials and related so on.',
         category: '',
         _id: ''
-    });
+    }
+    const [product, setProduct] = useState(initialState);
 
     useEffect(() => {
         if (id) {
             setOnEdit(true);
-            products.forEach((item) => {
-                if (item._id === id) {
-                    setProduct(item);
+            products.forEach((product) => {
+                if (product._id === id) {
+                    setProduct(product);
+                    setImages(product.images)
                 }
             })
+        } else {
+            setOnEdit(false);
+            setProduct(initialState);
+            setImages(false);
         }
-    }, [id])
+    }, [id, products])
 
     const [onEdit, setOnEdit] = useState(false);
     const handleUpload = async (e) => {
@@ -47,18 +52,16 @@ const CreateProduct = () => {
             if (!isAdmin) return alert("You're not an admin");
 
             const file = e.target.files[0];
-            console.log(">>>>>>",file);
-            let err = checkImage(file)
+            console.log(">>>>>>", file);
+            let err = checkImage(file);
             if (err) return alert(err);
 
-            setLoading(true);
-            let formData = new FormData();
+            let formData = new FormData()
             formData.append('file', file);
 
-            const res = await axios.post('/api/upload/create', {
-                formData
-            }, {
-                // withCredentials: true,
+            setLoading(true);
+            const res = await axios.post('/api/upload/create', formData, {
+                withCredentials: true,
                 headers: {
                     'content-type': 'multipart/form-data',
                     'Authorization': `Bearer ${token}`,
@@ -68,6 +71,7 @@ const CreateProduct = () => {
             setLoading(false);
             setImages(res.data.results);
         } catch (err) {
+            setLoading(false);
             alert(err !== undefined && err?.response?.data?.message);
         }
     }
@@ -79,10 +83,18 @@ const CreateProduct = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const res = await postDataAPI('/api/product', {
-                ...product,
-                images
-            }, token);
+            if (onEdit) {
+                await patchDataAPI(`/api/product/${id}`, {
+                    ...product,
+                    images
+                }, token);
+            } else {
+                await postDataAPI('/api/product', {
+                    ...product,
+                    images
+                }, token);
+            }
+            setCallback(!callback);
             history.push("/");
         } catch (err) {
             console.log(err);

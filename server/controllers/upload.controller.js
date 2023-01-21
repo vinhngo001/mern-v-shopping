@@ -2,7 +2,7 @@ const ResponseDTO = require("../dtos/response.dto");
 const fs = require("fs");
 const cloudinary = require('cloudinary');
 const { CLOUD_NAME, API_KEY, API_SECRET } = process.env;
-
+console.log({ CLOUD_NAME, API_KEY, API_SECRET } )
 cloudinary.config({
     cloud_name: `${CLOUD_NAME}`,
     api_key: `${API_KEY}`,
@@ -11,26 +11,29 @@ cloudinary.config({
 });
 
 const uploadController = {
-    post: async (req, res) => {
+    post: (req, res) => {
         const responseDTO = new ResponseDTO();
         try {
-            console.log(req.files);
+            // console.log(req.files)
             if (!req.files || Object.keys(req.files).length === 0) {
                 return res.status(400).json(responseDTO.badRequest('No files were uploaded.'));
             }
 
-            const file = req.files;
+            const file = req.files.file;
             if (file.size > 1024 * 1024) {
+                console.log(">>>> Check size")
                 removeTmp(file.tempFilePath)
                 return res.status(400).json(responseDTO.badRequest("File format is incorrect."));
             }
-
-            if (file.mimetype !== 'image/jpeg' && file.mimetype !== 'image/png') {
+            // console.log(file.mimetype, file.tempFilePath)
+            if (file.mimetype !== 'image/jpeg' && file.mimetype !== 'image/png' && file.mimetype !== "image/jpg") {
+                console.log(">>>> Check type")
                 removeTmp(file.tempFilePath)
                 return res.status(400).json(responseDTO.badRequest("File format is incorrect."))
             }
             cloudinary.v2.uploader.upload(file.tempFilePath, { folder: "test" }, async (err, result) => {
                 if (err) {
+                    console.log(err);
                     throw err;
                 }
                 removeTmp(file.tempFilePath)
