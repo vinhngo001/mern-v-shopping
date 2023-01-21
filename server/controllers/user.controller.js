@@ -30,9 +30,9 @@ const userController = {
             if (!updatedUser)
                 return res.status(400).json(responseDTO.badRequest('User not found or not authorized'));
 
-            res.status(200).json(responseDTO.success("Added to cart successfully", updatedUser))
+            res.status(200).json(responseDTO.success("Added to cart successfully", updatedUser));
         } catch (error) {
-            console.log(error)
+            console.log(error);
             res.status(500).json({ success: false, message: 'Internal server error' });
         }
     }

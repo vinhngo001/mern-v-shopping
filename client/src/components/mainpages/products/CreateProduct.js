@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { GlobalState } from '../../../GlobalState'
 import Loading from "../../Loading";
 import { useHistory, useParams } from 'react-router-dom'
-import { patchDataAPI, postDataAPI } from "../../../utils/fetchData";
+import { postDataAPI, putDataAPI } from "../../../utils/fetchData";
 import { checkImage } from "../../../utils/fileUpload";
 import axios from "axios";
 const initialState = {
@@ -86,7 +86,7 @@ const CreateProduct = () => {
         e.preventDefault();
         try {
             if (onEdit) {
-                const res = await patchDataAPI(`/api/product/${param.id}`, {
+                const res = await putDataAPI(`/api/product/${param.id}`, {
                     ...product,
                     images
                 }, token);
