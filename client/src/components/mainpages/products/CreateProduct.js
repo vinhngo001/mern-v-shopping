@@ -5,7 +5,15 @@ import { useHistory, useParams } from 'react-router-dom'
 import { patchDataAPI, postDataAPI } from "../../../utils/fetchData";
 import { checkImage } from "../../../utils/fileUpload";
 import axios from "axios";
-
+const initialState = {
+    product_id: '',
+    title: '',
+    price: 0,
+    description: '',
+    content: '',
+    category: '',
+    _id: ''
+}
 const CreateProduct = () => {
     const state = useContext(GlobalState);
     const [categories] = state.categoriesAPI.categories;
@@ -13,37 +21,31 @@ const CreateProduct = () => {
     const [products] = state.productAPI.products;
     const [token] = state.token;
     const [callback, setCallback] = state.productAPI.callback;
-    const [upload, setUpload] = useState("");
     const [images, setImages] = useState(false);
     const [loading, setLoading] = useState(false);
-    const { id } = useParams();
+
+    const param = useParams();
+
     const history = useHistory();
-    const initialState = {
-        product_id: '',
-        title: '',
-        price: 0,
-        description: 'How to and tutorial videos of cool CSS effect, Web Design ideas,JavaScript libraries, Node.',
-        content: 'Welcome to Dev-VN. Here you can learn web designing, UI/UX designing, html css tutorials, css animations and css effects, javascript and jquery tutorials and related so on.',
-        category: '',
-        _id: ''
-    }
+
     const [product, setProduct] = useState(initialState);
 
     useEffect(() => {
-        if (id) {
-            setOnEdit(true);
-            products.forEach((product) => {
-                if (product._id === id) {
-                    setProduct(product);
+        if (param.id) {
+            setOnEdit(true)
+            products.forEach(product => {
+                if (product._id === param.id) {
+                    setProduct(product)
                     setImages(product.images)
                 }
             })
         } else {
-            setOnEdit(false);
-            setProduct(initialState);
-            setImages(false);
+            setOnEdit(false)
+            setProduct(initialState)
+            setImages(false)
         }
-    }, [id, products])
+    }, [param.id, products, setProduct])
+
 
     const [onEdit, setOnEdit] = useState(false);
     const handleUpload = async (e) => {
@@ -84,15 +86,17 @@ const CreateProduct = () => {
         e.preventDefault();
         try {
             if (onEdit) {
-                await patchDataAPI(`/api/product/${id}`, {
+                const res = await patchDataAPI(`/api/product/${param.id}`, {
                     ...product,
                     images
                 }, token);
+                alert(res.data.message);
             } else {
-                await postDataAPI('/api/product', {
+                const res = await postDataAPI('/api/product', {
                     ...product,
                     images
                 }, token);
+                alert(res.data.message);
             }
             setCallback(!callback);
             history.push("/");

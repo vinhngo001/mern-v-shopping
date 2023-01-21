@@ -28,7 +28,16 @@ const productController = {
             // if (err) {
             //     return res.status(400).json(responseDTO.badRequest(err));
             // }
-            const newProduct = await new productModel({ ...req.body });
+            const { product_id, title, price, description, content, images, category } = req.body;
+            if (!images) {
+                return res.status(400).json(responseDTO.badRequest("Pleas upload image for product."));
+            }
+
+            const product = await productModel.findOne({ product_id })
+            if (product)
+                return res.status(400).json(responseDTO.badRequest("This product already exists."));
+
+            const newProduct = await new productModel({ product_id, title, price, description, content, images, category });
             await newProduct.save();
 
             res.status(200).json(responseDTO.success("Created new product successfully"));

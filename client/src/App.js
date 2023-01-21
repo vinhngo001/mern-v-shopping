@@ -6,7 +6,6 @@ import Headers from "./components/headers/Headers";
 
 function App() {
 	return (
-
 		<DataProvider>
 			<Router>
 				<div className="App">

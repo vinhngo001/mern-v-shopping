@@ -12,15 +12,15 @@ export const DataProvider = ({ children }) => {
     useEffect(() => {
         const firstLogin = localStorage.getItem("firstLogin");
         if (firstLogin) {
-            async function refreshToken() {
+            const refreshToken = async () => {
                 const res = await postDataAPI('/api/auth/refresh-token');
                 // console.log(res.data.results);
                 setToken(res?.data?.results?.accessToken);
                 setTimeout(() => {
                     refreshToken();
                 }, 10 * 60 * 1000);
-
             }
+
             refreshToken();
         }
     }, []);
@@ -33,6 +33,8 @@ export const DataProvider = ({ children }) => {
     }
 
     return (
-        <GlobalState.Provider value={state}>{children}</GlobalState.Provider>
+        <GlobalState.Provider value={state}>
+            {children}
+        </GlobalState.Provider>
     )
 }

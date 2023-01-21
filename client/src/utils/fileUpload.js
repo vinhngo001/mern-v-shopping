@@ -6,8 +6,10 @@ export const checkImage = (file) => {
 
     if (file.type !== "image/jpeg" && file.type !== "image/png" && file.type !== "image/jpg")
         return err = "Image format is incorrect";
+    
+    return err;
 }
 
-export const imageUpload = (imgages) => {
+export const imageUpload = (images) => {
 
 }

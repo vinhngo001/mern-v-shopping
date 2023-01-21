@@ -33,6 +33,10 @@ const Productchema = new Schema({
 		type: String,
 		required: true
 	},
+	price:{
+		type: Number,
+		default: 0
+	},
 	sold: {
 		type: Number,
 		default: 0

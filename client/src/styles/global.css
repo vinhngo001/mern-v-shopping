@@ -55,6 +55,9 @@ button {
 /* -------- CATEGORY ---------- */
 @import url("./categories.css");
 
+/* -------- PRODUCT ITEM ---------- */
+@import url("./product-item.css");
+
 /* ----------------- Responsive ------------------ */
 @media (max-width: 820px) {
     header .logo {
