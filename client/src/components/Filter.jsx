@@ -37,10 +37,10 @@ const Filter = ()=>{
                 <span>Sort By: </span>
                 <select value={sort} onChange={e => setSort(e.target.value)} >
                     <option value=''>Newest</option>
-                    <option value='sort=oldest'>Oldest</option>
-                    <option value='sort=-sold'>Best sales</option>
-                    <option value='sort=-price'>Price: Hight-Low</option>
-                    <option value='sort=price'>Price: Low-Hight</option>
+                    <option value='oldest'>Oldest</option>
+                    <option value='-sold'>Best sales</option>
+                    <option value='-price'>Price: Hight-Low</option>
+                    <option value='price'>Price: Low-Hight</option>
                 </select>
             </div>
         </div>

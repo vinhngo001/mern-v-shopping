@@ -1,16 +1,18 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { GlobalState } from "../../../GlobalState";
+import ProductItem from "./ProductItem";
 
 const DetailProduct = () => {
     const state = useContext(GlobalState);
-    const [products] = state.productAPI.products
-    const addCart = state.userAPI.addCart
+    const [products] = state.productAPI.products;
+    const addCart = state.userAPI.addCart;
     const { id } = useParams();
-    const [product, setProduct] = useState(false);
+    const [product, setProduct] = useState([]);
+
     useEffect(() => {
         if (id) {
-            product.forEach(product => {
+            products.forEach(product => {
                 if (product._id === id) {
                     setProduct(product);
                 }
@@ -18,6 +20,7 @@ const DetailProduct = () => {
         }
     }, [id, products]);
 
+    if(product.length === 0) return null;
     return (
         <>
             <div className="detail">
@@ -35,6 +38,19 @@ const DetailProduct = () => {
                         onClick={() => addCart(product)}>
                         Buy Now
                     </Link>
+                </div>
+            </div>
+
+            <div>
+                <h2>Related products</h2>
+                <div className="products">
+                    {
+                        products.map(p => {
+                            return p.category === product.category 
+                                ? <ProductItem key={p._id} product={p} /> 
+                                : null
+                        })
+                    }
                 </div>
             </div>
         </>

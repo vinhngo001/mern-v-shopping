@@ -49,7 +49,13 @@ const productController = {
     update: async (req, res) => {
         const responseDTO = new ResponseDTO();
         try {
+            const updatedProduct = await productModel.findOneAndUpdate({ _id: req.body._id }, {
+                ...req.body
+            }, { new: true, runValidators: true });
+            if (!updatedProduct)
+                return res.status(400).json(responseDTO.badRequest("This product does not exists."));
 
+            res.status(200).json(responseDTO.success("Updated product successfully", { product: updatedProduct }));
         } catch (error) {
             console.log(error);
             return res.status(500).json(responseDTO.serverError(error.message));

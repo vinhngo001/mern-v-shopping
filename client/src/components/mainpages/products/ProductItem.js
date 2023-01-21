@@ -1,5 +1,5 @@
 import React from "react";
-import BtnRender from "../../BtnRender";
+import ActionBtn from "../../ActionBtn";
 const ProductItem = ({product, isAdmin, deleteProduct, handleCheck}) => {
     return(
         <div className="product_card">
@@ -16,7 +16,7 @@ const ProductItem = ({product, isAdmin, deleteProduct, handleCheck}) => {
         </div>
 
         
-        <BtnRender product={product} deleteProduct={deleteProduct} />
+        <ActionBtn product={product} deleteProduct={deleteProduct} />
     </div>
     )
 }   

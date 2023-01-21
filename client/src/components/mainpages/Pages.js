@@ -31,7 +31,7 @@ const Pages = () => {
 			<Route path="/product" exact component={Products} />
 			<Route path="/product/create" exact component={isAdmin ? CreateProduct : NotFound} />
 			<Route path="/product/edit/:id" exact component={isAdmin ? CreateProduct : NotFound} />
-			<Route path="/product/:id" exact component={DetailProduct} />
+			<Route path="/product/detail/:id" exact component={DetailProduct} />
 			
 			{/* Cart */}
 			<Route path="/cart" exact component={Cart} />
