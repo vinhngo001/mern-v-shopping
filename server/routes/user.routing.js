@@ -9,4 +9,11 @@ const userCtrl = require("../controllers/user.controller");
 */
 router.get('/', auth, userCtrl.getUser);
 
+/**  
+ * @route POST api/user/add-to-cart
+ * @desc Add new product to cart
+ * @access Public
+*/
+router.put('/add-to-cart', auth, userCtrl.addCart);
+
 module.exports = router;

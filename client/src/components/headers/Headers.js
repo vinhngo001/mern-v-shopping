@@ -11,8 +11,8 @@ const Headers = () => {
 	const [isAdmin] = state.userAPI.isAdmin;
 	const [isLogged] = state.userAPI.isLogged;
 	const [menu, setMenu] = useState(false);
-	const cart = state.userAPI.cart;
-
+	const [cart] = state.userAPI.cart;
+	console.log({cart})
 	const styleMenu = {
 		left: menu ? 0 : "-100%"
 	}
@@ -56,7 +56,8 @@ const Headers = () => {
 				</li>
 			</ul>
 			{
-				isAdmin ? ''
+				isAdmin
+					? ''
 					: <div className="cart-icon">
 						<span>{cart.length}</span>
 						<Link to="/cart">

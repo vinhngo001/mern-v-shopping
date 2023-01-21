@@ -144,4 +144,7 @@ button {
     .create_product .upload {
         margin: 20px 0;
     }
+    .create_product>form >button{
+        width: 100%;
+    }
 }
