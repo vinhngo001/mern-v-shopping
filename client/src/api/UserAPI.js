@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { getDataAPI, postDataAPI } from "../utils/fetchData";
+import { getDataAPI, postDataAPI, putDataAPI } from "../utils/fetchData";
 
 function UserAPI(token) {
 	const [isLogged, setIsLogged] = useState(false);
@@ -13,7 +13,7 @@ function UserAPI(token) {
 					const res = await getDataAPI('/api/user', token);
 					setIsLogged(true);
 					const user = res.data.results._doc;
-					// console.log(user);
+					console.log({user});
 					user.role === "admin" ? setIsAdmin(true) : setIsAdmin(false);
 					setCart(user.cart);
 				} catch (err) {
@@ -32,16 +32,17 @@ function UserAPI(token) {
 				return alert("Please login to continue buying")
 			}
 
-			if (cart.ever(p => p._id !== product._id)) {
+			if (cart.every(p => p._id !== product._id)) {
 				setCart([...cart, { ...product, quantity: 1 }]);
 
-				await postDataAPI('/api/user/add-to-cart', {
+				await putDataAPI('/api/user/add-to-cart', {
 					cart: [...cart, { ...product, quantity: 1 }]
 				}, token);
 			} else {
+				product.quantity = 1;
 				const newData = cart.map(p => p._id === product._id ? { ...product, quantity: product.quantity + 1 } : p);
 				setCart([...newData]);
-				await postDataAPI('/api/user/add-to-cart', {
+				await putDataAPI('/api/user/add-to-cart', {
 					cart: [...newData]
 				}, token)
 			}

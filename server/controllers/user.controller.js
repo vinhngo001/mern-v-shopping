@@ -23,7 +23,11 @@ const userController = {
             if (!cart || cart.length === 0)
                 return res.status(400).json(responseDTO.badRequest('Please add new product to cart'));
 
-            const updatedUser = await userModel.findOneAndUpdate({ _id: req.user._id }, {
+            const currentUser = await userModel.findById(req.user.id).select("-password");
+            if(!currentUser)
+                return res.status(400).json(responseDTO.badRequest('Please login to continue shopping'));
+            
+            const updatedUser = await userModel.findOneAndUpdate({ _id: currentUser._id }, {
                 cart: cart
             }, { new: true, runValidators: true }).select("-password");
             
