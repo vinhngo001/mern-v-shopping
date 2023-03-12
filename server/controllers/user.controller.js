@@ -13,7 +13,7 @@ const userController = {
             res.json(responseDTO.success("Success", { ...user }))
         } catch (error) {
             console.log(error)
-            res.status(500).json({ success: false, message: 'Internal server error' });
+            return res.status(500).json(responseDTO.serverError(error.message));
         }
     },
     addCart: async (req, res) => {
@@ -24,22 +24,22 @@ const userController = {
                 return res.status(400).json(responseDTO.badRequest('Please add new product to cart'));
 
             const currentUser = await userModel.findById(req.user.id).select("-password");
-            if(!currentUser)
+            if (!currentUser)
                 return res.status(400).json(responseDTO.badRequest('Please login to continue shopping'));
-            
+
             const updatedUser = await userModel.findOneAndUpdate({ _id: currentUser._id }, {
                 cart: cart
             }, { new: true, runValidators: true }).select("-password");
-            
+
             if (!updatedUser)
                 return res.status(400).json(responseDTO.badRequest('User not found or not authorized'));
 
             res.status(200).json(responseDTO.success("Added to cart successfully", updatedUser));
         } catch (error) {
             console.log(error);
-            res.status(500).json({ success: false, message: 'Internal server error' });
+            return res.status(500).json(responseDTO.serverError(error.message));
         }
-    }
+    },
 }
 
 module.exports = userController;
