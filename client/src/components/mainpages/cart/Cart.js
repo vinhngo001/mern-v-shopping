@@ -1,3 +1,4 @@
+import axios from "axios";
 import React, { useContext, useState } from "react";
 import { GlobalState } from "../../../GlobalState";
 import PaypalButton from "./PaymentButton";
@@ -7,20 +8,60 @@ const Cart = () => {
     const [cart, setCart] = state.userAPI.cart;
     const [token] = state.token;
     const [total, setTotal] = useState(0);
-    const decrement = ()=>{
 
+    const addToCart = async (cart) => {
+        try {
+            await axios.put('/api/user/add-to-cart', { cart }, {
+                headers: { Authorization: `Bearer ${token}` }
+            })
+        } catch (error) {
+            console.log(error.response);
+        }
+    }
+    const decrement = (id) => {
+        cart.forEach(item => {
+            if (item._id === id) {
+                item.quantity === 1 ? item.quantity = 1 : item.quantity -= 1
+            }
+        });
+        setCart([...cart]);
+        addToCart(cart);
     }
 
-    const increment = () =>{
-
+    const increment = (id) => {
+        cart.forEach(item => {
+            if (item._id === id) {
+                item.quantity += 1
+            }
+        });
+        setCart([...cart]);
+        addToCart(cart);
     }
-    const removeProduct = () => {
 
+    const removeProduct = (id) => {
+        if(window.confirm("Do you want to delete this product")){
+            cart.forEach((item, index)=>{
+                if(item._id === id){
+                    cart.splice(index, 1);
+                }
+            });
+            setCart([...cart]);
+            addToCart(cart);
+        }
     }
 
-    const tranSuccess = async()=>{
-        
+    const tranSuccess = async (payment) => {
+        const { paymentID, address } = payment;
+        await axios.post('/api/payment', { cart, paymentID, address }, {
+            headers: { Authorization: token }
+        })
+        setCart([]);
+        addToCart([]);
+        alert("You have successfully placed an order.");
     }
+
+    if (cart.length === 0)
+        return <h2 style={{ textAlign: "center", fontSize: "5rem" }}>Cart Empty</h2>
 
     return (
         <div>
@@ -53,8 +94,8 @@ const Cart = () => {
             <div className="total">
                 <h3>Total: $ {total}</h3>
                 <PaypalButton
-                total={total}
-                tranSuccess={tranSuccess} />
+                    total={total}
+                    tranSuccess={tranSuccess} />
             </div>
         </div>
     )
