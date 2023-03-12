@@ -9,7 +9,7 @@ const categoryController = {
             res.status(200).json(responseDTO.success("Get categories successfully", categories));
         } catch (error) {
             console.log(error);
-            return res.status(500).json({ message: error.message });
+            return res.status(500).json(responseDTO.serverError(error.message));
         }
     },
     create: async (req, res) => {
