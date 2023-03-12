@@ -1,19 +1,27 @@
-import axios from "axios";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { GlobalState } from "../../../GlobalState";
 import PaypalButton from "./PaymentButton";
-
+import {postDataAPI, putDataAPI} from "../../../utils/fetchData"
 const Cart = () => {
     const state = useContext(GlobalState);
     const [cart, setCart] = state.userAPI.cart;
     const [token] = state.token;
     const [total, setTotal] = useState(0);
 
+    useEffect(()=>{
+        const getTotal = ()=>{
+            const total = cart.reduce((prev, item)=>{
+                return prev + (item.price * item.quantity);
+            }, 0);
+
+            setTotal(total)
+        }
+        getTotal();
+    },[cart]);
+    
     const addToCart = async (cart) => {
         try {
-            await axios.put('/api/user/add-to-cart', { cart }, {
-                headers: { Authorization: `Bearer ${token}` }
-            })
+            await putDataAPI('/api/user/add-to-cart', { cart }, token)
         } catch (error) {
             console.log(error.response);
         }
@@ -52,9 +60,7 @@ const Cart = () => {
 
     const tranSuccess = async (payment) => {
         const { paymentID, address } = payment;
-        await axios.post('/api/payment', { cart, paymentID, address }, {
-            headers: { Authorization: token }
-        })
+        await postDataAPI('/api/payment', { cart, paymentID, address }, token);
         setCart([]);
         addToCart([]);
         alert("You have successfully placed an order.");

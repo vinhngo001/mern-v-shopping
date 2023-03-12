@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { getDataAPI, postDataAPI, putDataAPI } from "../utils/fetchData";
+import { getDataAPI, putDataAPI } from "../utils/fetchData";
 
 function UserAPI(token) {
 	const [isLogged, setIsLogged] = useState(false);

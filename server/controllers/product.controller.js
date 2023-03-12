@@ -64,7 +64,10 @@ const productController = {
     delete: async (req, res) => {
         const responseDTO = new ResponseDTO();
         try {
+            const deletedProduct = await productModel.findOneAndDelete({ _id: req.params.id });
+            if (!deletedProduct) return res.status(400).json(responseDTO.badRequest("This product does not exist!"));
 
+            res.staus(200).json(responseDTO.success("Deleted this product successfully!"));
         } catch (error) {
             console.log(error);
             return res.status(500).json(responseDTO.serverError(error.message));
