@@ -10,7 +10,7 @@ const Products = () => {
     const [isAdmin] = state.userAPI.isAdmin;
     const [products, setProducts] = state.productAPI.products;
     const [callback, setCallback] = state.productAPI.callback;
-    
+
     const [loading, setLoading] = useState(false);
     const [isCheck, setIsCheck] = useState(false);
 
@@ -44,7 +44,7 @@ const Products = () => {
             setCallback(!callback)
             setLoading(false)
         } catch (error) {
-            console.log(error);
+            console.log(error.response);
             alert(error?.response?.data.message)
         }
     }

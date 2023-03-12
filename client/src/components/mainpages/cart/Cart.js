@@ -1,7 +1,8 @@
 import React, { useContext, useEffect, useState } from "react";
 import { GlobalState } from "../../../GlobalState";
 import PaypalButton from "./PaymentButton";
-import {postDataAPI, putDataAPI} from "../../../utils/fetchData"
+import {postDataAPI, putDataAPI} from "../../../utils/fetchData";
+
 const Cart = () => {
     const state = useContext(GlobalState);
     const [cart, setCart] = state.userAPI.cart;

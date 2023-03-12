@@ -4,7 +4,7 @@ const ResponseDTO = require("../dtos/response.dto");
 const userModel = require("../models/user.model");
 
 const paymentController = {
-    getPayments: async () => {
+    getPayments: async (req, res) => {
         const responseDTO = new ResponseDTO();
         try {
             const payments = await paymentModel.find();
@@ -13,7 +13,7 @@ const paymentController = {
             return res.status(500).json(responseDTO.serverError(error.message));
         }
     },
-    createPayment: async () => {
+    createPayment: async (req, res) => {
         const responseDTO = new ResponseDTO();
         try {
             const user = await userModel.findById(req.user._id).select("name email");
