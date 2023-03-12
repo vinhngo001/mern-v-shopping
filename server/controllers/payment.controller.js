@@ -1,6 +1,7 @@
 const paymentModel = require("../models/payment.model");
 const productModel = require("../models/product.model");
 const ResponseDTO = require("../dtos/response.dto");
+const userModel = require("../models/user.model");
 
 const paymentController = {
     getPayments: async () => {
@@ -15,7 +16,26 @@ const paymentController = {
     createPayment: async () => {
         const responseDTO = new ResponseDTO();
         try {
+            const user = await userModel.findById(req.user._id).select("name email");
+            if (!user) {
+                return res.status(400).json(responseDTO.badRequest("User does not exist."))
+            }
 
+            const { cart, paymentID, address } = req.body;
+
+            const { _id, name, email } = user;
+
+            const newPayment = await new paymentModel({
+                user_id: _id, name, email, cart, payment_id: paymentID, address
+            });
+
+            cart.filter(item => {
+                return sold(item._id, item.quantity, item.sold);
+            });
+
+            await newPayment.save();
+
+            res.status(200).json(responseDTO.success("Payment successfully!"));
         } catch (error) {
             console.log(error);
             return res.status(500).json(responseDTO.serverError(error.message));

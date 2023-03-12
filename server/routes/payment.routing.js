@@ -7,7 +7,7 @@ const paymentCtrl = require("../controllers/payment.controller");
  * @desc Get all payments of user
  * @access Public
 */
-router.get('/', auth, paymentCtrl.getPayments);
+router.get('/', [auth, admin], paymentCtrl.getPayments);
 
 /**  
  * @route POST api/payment
@@ -21,6 +21,6 @@ router.post('/', auth, paymentCtrl.createPayment);
  * @desc Add view all transaction from users
  * @access Public
 */
-router.get('/', [auth, admin], paymentCtrl.history);
+router.get('/', auth, paymentCtrl.history);
 
 module.exports = router;
